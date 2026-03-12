@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service.meta_title|default:service.name }} | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ service.meta_description|default:service.short_description|truncatechars:200 }}" />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+{% block og_title %}{{ service.name }} | Синтез М{% endblock %}
+{% block og_description %}{{ service.meta_description|default:service.short_description|truncatechars:200 }}{% endblock %}
+{% block schema %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "{{ service.name|escapejs }}"
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container grid-2">
+      <div class="prose">
+        <nav class="breadcrumbs" aria-label="Навигация по разделу">
+          <a href="{% url 'core:index' %}">Главная</a>
+          <span>/</span>
+          <a href="{% url 'services:list' %}">Услуги</a>
+          <span>/</span>
+          <span aria-current="page">{{ service.name }}</span>
+        </nav>
+        <h1>{{ service.name }}</h1>
+        {% if service.image %}
+          <p><img src="{{ service.image.url }}" alt="{{ service.name }}" style="max-width:100%;border-radius:12px;"></p>
+        {% endif %}
+        {% if service.price_display %}
+          <div class="price">от {{ service.price_display }}</div>
+        {% elif service.is_price_on_request %}
+          <div class="muted">Цена по запросу</div>
+        {% endif %}
+        <div class="content-block">{{ service.full_description|linebreaks }}</div>
+      </div>
+      <div class="panel">
+        <h2 class="h2">Заявка по услуге</h2>
+        {% include "partials/application_form.html" with source="service" service=service %}
+        {% if request.GET.success %}
+          <div class="notice notice-ok">Заявка отправлена. Мы свяжемся с вами.</div>
+        {% endif %}
+        {% if request.GET.error %}
+          <div class="notice notice-bad">Проверьте обязательные поля и попробуйте ещё раз.</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

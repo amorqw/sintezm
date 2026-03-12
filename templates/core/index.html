@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Синтез М — услуги и запчасти | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="Мойка и пропарка танк-контейнеров, бензовозов и IBC. Сварочные и слесарные работы. Поставка расходников и комплектующих." />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+{% block og_description %}Мойка и пропарка танк-контейнеров, бензовозов и IBC. Ремонтные работы. Поставка расходников и комплектующих.{% endblock %}
+{% block schema %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Синтез М",
+      "url": "{{ request.build_absolute_uri }}",
+      "email": "info@sintez-m.ru",
+      "telephone": "+70000000000"
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <div class="container hero-inner">
+      <div>
+        <h1>Сервис и комплектующие для танк-контейнеров и бензовозов</h1>
+        <p class="lead">
+          Мойка, пропарка, ремонт и монтаж. Поставка расходников и запчастей из Китая под B2B-задачи.
+        </p>
+        <p>
+          <a class="btn btn-accent" href="#request">Оставить заявку</a>
+        </p>
+      </div>
+      <div class="hero-card">
+        <h2 class="h2">Для кого мы работаем</h2>
+        <div class="content-block">
+          <ul>
+            <li>Операторы и владельцы танк-контейнеров</li>
+            <li>Автопарки с бензовозами</li>
+            <li>Логистические и производственные компании с IBC-контейнерами</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Услуги</h2>
+        <a class="link" href="{% url 'services:list' %}">Все услуги →</a>
+      </div>
+      <div class="grid">
+        {% for service in services %}
+          <a class="card" href="{{ service.get_absolute_url }}">
+            <div class="card-title">{{ service.name }}</div>
+            <div class="muted">{{ service.short_description|truncatechars:140 }}</div>
+          </a>
+        {% empty %}
+          <div class="muted">Пока нет услуг — добавьте их в админке.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-head">
+        <h2 class="h2">Каталог</h2>
+        <a class="link" href="{% url 'catalog:index' %}">Перейти в каталог →</a>
+      </div>
+      <div class="grid">
+        {% for category in categories %}
+          <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
+            <div class="card-title">{{ category.name }}</div>
+            {% if category.description %}
+              <div class="muted">{{ category.description|truncatechars:140 }}</div>
+            {% endif %}
+          </a>
+        {% empty %}
+          <div class="muted">Пока нет категорий — добавьте их в админке.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="request">
+    <div class="container grid-2">
+      <div class="prose">
+        <h2 class="h2">Оставить заявку</h2>
+        <p class="muted">
+          Опишите задачу — мойка, пропарка, ремонт или подбор запчастей. Менеджер свяжется с вами, уточнит детали и подготовит предложение.
+        </p>
+      </div>
+      <div class="panel">
+        {% include "partials/application_form.html" with source="general" %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

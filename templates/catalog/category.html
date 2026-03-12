@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}{{ category.name }} | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ category.description|default:'Товары и комплектующие категории'|truncatechars:200 }}" />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <nav class="breadcrumbs" aria-label="Навигация по разделу">
+        <a href="{% url 'core:index' %}">Главная</a>
+        <span>/</span>
+        <a href="{% url 'catalog:index' %}">Каталог</a>
+        <span>/</span>
+        <span aria-current="page">{{ category.name }}</span>
+      </nav>
+      <h1>{{ category.name }}</h1>
+      
+      {% if category.description %}
+        <p class="lead">{{ category.description }}</p>
+      {% endif %}
+      <div class="grid">
+        {% for product in products %}
+          <a class="card" href="{{ product.get_absolute_url }}">
+            {% if product.image %}
+              <div style="margin-bottom:8px">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;">
+              </div>
+            {% endif %}
+            <div class="card-title">{{ product.name }}</div>
+            {% if product.article_number %}
+              <div class="muted">Артикул: {{ product.article_number }}</div>
+            {% endif %}
+            {% if product.price_display %}
+              <div class="price">{{ product.price_display }}</div>
+            {% elif product.is_price_on_request %}
+              <div class="muted">Цена по запросу</div>
+            {% endif %}
+          </a>
+        {% empty %}
+          <div class="muted">В этой категории пока нет товаров.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

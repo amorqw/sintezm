@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Контакты | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="Контакты компании «Синтез М»: телефон, email, адрес. Оставьте заявку — менеджер перезвонит." />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container grid-2">
+      <div class="prose">
+        <h1>Контакты</h1>
+        <p class="muted">Онлайн-оплаты нет. Работаем по заявкам — менеджер перезвонит.</p>
+        <div class="contact-list">
+          <div><strong>Телефон:</strong> <a href="tel:+70000000000">+7 (000) 000-00-00</a></div>
+          <div><strong>Email:</strong> <a href="mailto:info@sintez-m.ru">info@sintez-m.ru</a></div>
+          <div><strong>Адрес:</strong> Россия, г. Пермь, ул. Причальная 9 </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2 class="h2">Заявка</h2>
+        {% include "partials/application_form.html" with source="general" %}
+        {% if request.GET.success %}
+          <div class="notice notice-ok">Заявка отправлена. Мы свяжемся с вами.</div>
+        {% endif %}
+        {% if request.GET.error %}
+          <div class="notice notice-bad">Проверьте обязательные поля и попробуйте ещё раз.</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

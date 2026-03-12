@@ -1,0 +1,46 @@
+<form class="app-form js-app-form" method="post" action="{% url 'applications:apply' %}">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+  <input type="hidden" name="source" value="{{ source|default:'general' }}" />
+  {% if service %}
+    <input type="hidden" name="service_id" value="{{ service.id }}" />
+  {% endif %}
+  {% if product %}
+    <input type="hidden" name="product_id" value="{{ product.id }}" />
+  {% endif %}
+
+  <div class="form-grid">
+    <label class="field">
+      <span>Имя *</span>
+      <input name="name" required maxlength="200" autocomplete="name" />
+    </label>
+    <label class="field">
+      <span>Телефон *</span>
+      <input
+        name="phone"
+        class="js-phone"
+        type="tel"
+        required
+        maxlength="18"
+        autocomplete="tel"
+        inputmode="tel"
+        placeholder="+7 (999) 123-45-67"
+      />
+    </label>
+    <label class="field">
+      <span>Email *</span>
+      <input name="email" type="email" required autocomplete="email" />
+    </label>
+    <label class="field field-full">
+      <span>Сообщение</span>
+      <textarea name="message" rows="4"></textarea>
+    </label>
+  </div>
+
+  <div class="form-actions">
+    <button class="btn btn-accent" type="submit">Отправить заявку</button>
+    <div class="form-hint muted">Перезвоним в рабочее время. Онлайн-оплаты нет.</div>
+  </div>
+
+  <div class="form-result" aria-live="polite"></div>
+</form>

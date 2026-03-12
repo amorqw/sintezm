@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.meta_title|default:product.name }} | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="{{ product.meta_description|default:product.description|truncatechars:200 }}" />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+{% block og_title %}{{ product.name }} | Синтез М{% endblock %}
+{% block og_description %}{{ product.meta_description|default:product.description|truncatechars:200 }}{% endblock %}
+{% block schema %}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "{{ product.name|escapejs }}",
+      "sku": "{{ product.article_number|escapejs }}",
+      "category": "{{ product.category.name|escapejs }}",
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "RUB",
+        "price": "{{ product.price_display|escapejs }}",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container grid-2">
+      <div class="prose">
+        <nav class="breadcrumbs" aria-label="Навигация по разделу">
+          <a href="{% url 'core:index' %}">Главная</a>
+          <span>/</span>
+          <a href="{% url 'catalog:index' %}">Каталог</a>
+          <span>/</span>
+          <a href="{% url 'catalog:category' category_slug=product.category.slug %}">{{ product.category.name }}</a>
+          <span>/</span>
+          <span aria-current="page">{{ product.name }}</span>
+        </nav>
+        <h1>{{ product.name }}</h1>
+        {% if product.image %}
+          <p><img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width:100%;border-radius:12px;"></p>
+        {% endif %}
+        {% if product.article_number %}
+          <div class="muted">Артикул: {{ product.article_number }}</div>
+        {% endif %}
+        {% if product.price_display %}
+          <div class="price">{{ product.price_display }}</div>
+        {% elif product.is_price_on_request %}
+          <div class="muted">Цена по запросу</div>
+        {% endif %}
+
+        <div class="content-block">{{ product.description|linebreaks }}</div>
+        {% if product.applicability %}
+          <h2>Применяемость</h2>
+          <div class="content-block">{{ product.applicability|linebreaks }}</div>
+        {% endif %}
+      </div>
+      <div class="panel">
+        <h2 class="h2">Заявка по товару</h2>
+        {% include "partials/application_form.html" with source="product" product=product %}
+        {% if request.GET.success %}
+          <div class="notice notice-ok">Заявка отправлена. Мы свяжемся с вами.</div>
+        {% endif %}
+        {% if request.GET.error %}
+          <div class="notice notice-bad">Проверьте обязательные поля и попробуйте ещё раз.</div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

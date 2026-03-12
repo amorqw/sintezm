@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Каталог запчастей | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="Каталог запчастей и комплектующих для танк-контейнеров и бензовозов: прокладки, донные клапаны и другие расходники." />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <h1>Каталог</h1>
+      <div class="grid">
+        {% for category in categories %}
+          <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
+            
+            <div class="card-title">{{ category.name }}</div>
+            {% if category.description %}
+              <div class="muted">{{ category.description|truncatechars:160 }}</div>
+            {% endif %}
+          </a>
+        {% empty %}
+          <div class="muted">Категории ещё не добавлены.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}

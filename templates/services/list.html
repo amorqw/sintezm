@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Услуги | Синтез М{% endblock %}
+{% block meta_description %}<meta name="description" content="Услуги компании «Синтез М»: мойка и пропарка танк-контейнеров, бензовозов и IBC, ремонтные работы, монтаж." />{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.build_absolute_uri }}" />{% endblock %}
+
+{% block content %}
+  <section class="section">
+    <div class="container">
+      <h1>Услуги</h1>
+      <div class="grid">
+        {% for service in services %}
+          <a class="card" href="{{ service.get_absolute_url }}">
+            {% if service.image %}
+              <div style="margin-bottom:8px">
+                <img src="{{ service.image.url }}" alt="{{ service.name }}" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;">
+              </div>
+            {% endif %}
+            <div class="card-title">{{ service.name }}</div>
+            <div class="muted">{{ service.short_description|truncatechars:160 }}</div>
+            {% if service.price_display %}
+              <div class="price">от {{ service.price_display }}</div>
+            {% endif %}
+          </a>
+        {% empty %}
+          <div class="muted">Услуги ещё не добавлены.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
