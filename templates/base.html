@@ -27,7 +27,7 @@
   <body>
     <header class="site-header">
       <div class="container header-inner">
-        <a class="logo" href="{% url 'core:index' %}">Синтез М</a>
+        <a class="logo" href="{% url 'core:index' %}">Синтез М <img src="{% static 'images/logo.png' %}" alt="Синтез М" style="height: 40px; margin-left: 8px; vertical-align: middle;"></a>
         <nav class="nav" aria-label="Основная навигация">
           {% url 'services:list' as services_url %}
           {% url 'catalog:index' as catalog_url %}
@@ -52,7 +52,7 @@
     <footer class="site-footer">
       <div class="container footer-inner">
         <div class="muted">© {{ SITE_NAME }}, {% now "Y" %}</div>
-        <div class="muted">B2B сервис и комплектующие для танк-контейнеров и бензовозов</div>
+        <div class="muted">Сервис и комплектующие для танк-контейнеров и бензовозов</div>
       </div>
     </footer>
   </body>

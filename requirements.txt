@@ -6,3 +6,4 @@ httpx
 python-dotenv
 django-environ
 pytils
+python-telegram-bot

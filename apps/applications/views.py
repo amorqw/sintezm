@@ -5,12 +5,13 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import View
+from datetime import timedelta
 
 from apps.catalog.models import Product
 from apps.services.models import Service
 
 from .models import Application
-from .services import notify_manager_email, notify_telegram
+from .services import notify_telegram
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,9 @@ def _get_source_display(source: str) -> str:
 
 
 def _telegram_text(app: Application) -> str:
-    created = timezone.localtime(app.created_at).strftime("%d.%m.%Y %H:%M")
+    # Добавляем 2 часа к времени создания
+    created_time = timezone.localtime(app.created_at) + timedelta(hours=2)
+    created = created_time.strftime("%d.%m.%Y %H:%M")
     return "\n".join(
         [
             "🔔 Новая заявка с сайта!",
@@ -34,20 +37,6 @@ def _telegram_text(app: Application) -> str:
             f"🕐 {created}",
         ]
     )
-
-
-def _email_text(app: Application) -> tuple[str, str]:
-    subject = f"Новая заявка — {app.name} | Синтез М"
-    lines = [
-        "Новая заявка с сайта «Синтез М»",
-        "",
-        f"Имя: {app.name}",
-        f"Телефон: {app.phone}",
-        f"Email: {app.email or 'не указан'}",
-        f"Источник: {_get_source_display(app.source)}",
-    ]
-    if app.service_id:
-        lines.append(f"Услуга: {app.service.name} (id={app.service_id})")
     if app.product_id:
         lines.append(f"Товар: {app.product.name} (id={app.product_id})")
     lines.extend(["", f"Сообщение: {app.message or 'не указано'}"])
@@ -89,12 +78,6 @@ class ApplyView(View):
             service=service,
             product=product,
         )
-
-        subject, body = _email_text(app)
-        try:
-            notify_manager_email(subject, body)
-        except Exception:
-            logger.exception("Ошибка отправки email по заявке id=%s", app.id)
 
         try:
             notify_telegram(_telegram_text(app))

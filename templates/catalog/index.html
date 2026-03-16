@@ -11,7 +11,11 @@
       <div class="grid">
         {% for category in categories %}
           <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
-            
+            {% if category.image %}
+              <div style="margin-bottom:8px">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+              </div>
+            {% endif %}
             <div class="card-title">{{ category.name }}</div>
             {% if category.description %}
               <div class="muted">{{ category.description|truncatechars:160 }}</div>

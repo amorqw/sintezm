@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Синтез М — услуги и запчасти | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="Мойка и пропарка танк-контейнеров, бензовозов и IBC. Сварочные и слесарные работы. Поставка расходников и комплектующих." />{% endblock %}
@@ -21,12 +22,12 @@
   <section class="hero">
     <div class="container hero-inner">
       <div>
-        <h1>Сервис и комплектующие для танк-контейнеров и бензовозов</h1>
+        <h1>Профессиональный сервис для танк-контейнеров и бензовозов</h1>
         <p class="lead">
-          Мойка, пропарка, ремонт и монтаж. Поставка расходников и запчастей из Китая под B2B-задачи.
+          Мы обеспечиваем полный цикл обслуживания: от глубокой мойки и пропарки до сложного ремонта и монтажа. Поставляем качественные запчасти и расходники напрямую из Китая. Работаем без выходных, в любую погоду — ваш надежный партнер в логистике жидкостей.
         </p>
         <p>
-          <a class="btn btn-accent" href="#request">Оставить заявку</a>
+          <a class="btn btn-accent" href="{% url 'core:contacts' %}">Оставить заявку</a>
         </p>
       </div>
       <div class="hero-card">
@@ -51,6 +52,11 @@
       <div class="grid">
         {% for service in services %}
           <a class="card" href="{{ service.get_absolute_url }}">
+            {% if service.image %}
+              <div style="margin-bottom:8px">
+                <img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+              </div>
+            {% endif %}
             <div class="card-title">{{ service.name }}</div>
             <div class="muted">{{ service.short_description|truncatechars:140 }}</div>
           </a>
@@ -70,6 +76,11 @@
       <div class="grid">
         {% for category in categories %}
           <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
+            {% if category.image %}
+              <div style="margin-bottom:8px">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+              </div>
+            {% endif %}
             <div class="card-title">{{ category.name }}</div>
             {% if category.description %}
               <div class="muted">{{ category.description|truncatechars:140 }}</div>
@@ -78,20 +89,6 @@
         {% empty %}
           <div class="muted">Пока нет категорий — добавьте их в админке.</div>
         {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <section class="section" id="request">
-    <div class="container grid-2">
-      <div class="prose">
-        <h2 class="h2">Оставить заявку</h2>
-        <p class="muted">
-          Опишите задачу — мойка, пропарка, ремонт или подбор запчастей. Менеджер свяжется с вами, уточнит детали и подготовит предложение.
-        </p>
-      </div>
-      <div class="panel">
-        {% include "partials/application_form.html" with source="general" %}
       </div>
     </div>
   </section>

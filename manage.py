@@ -5,6 +5,8 @@ import sys
 
 def main() -> None:
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+    # Add current directory to Python path
+    sys.path.insert(0, os.path.dirname(__file__))
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

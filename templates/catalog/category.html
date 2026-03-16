@@ -24,7 +24,7 @@
           <a class="card" href="{{ product.get_absolute_url }}">
             {% if product.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;">
               </div>
             {% endif %}
             <div class="card-title">{{ product.name }}</div>
