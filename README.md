@@ -126,7 +126,7 @@ SITE_NAME=Синтез М
    - `SECRET_KEY`: сгенерируйте новый ключ
    - `DEBUG`: `False`
    - `ALLOWED_HOSTS`: ваш домен Vercel (например, `your-app.vercel.app`)
-   - `DATABASE_URL`: URL вашей базы данных (PostgreSQL)
+   - `DATABASE_URL`: URL вашей базы данных (PostgreSQL или другой)
    - `TELEGRAM_BOT_TOKEN`: токен бота (опционально)
 
 5. **Переразверните**:

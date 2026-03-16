@@ -4,8 +4,6 @@ import environ
 
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-LOG_DIR = BASE_DIR / "logs"
-LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 env = environ.Env(
     DEBUG=(bool, False),
@@ -110,12 +108,7 @@ LOGGING = {
     },
     "handlers": {
         "console": {"class": "logging.StreamHandler", "formatter": "verbose"},
-        "file": {
-            "class": "logging.FileHandler",
-            "filename": str(LOG_DIR / "django.log"),
-            "formatter": "verbose",
-        },
     },
-    "root": {"handlers": ["console", "file"], "level": "INFO"},
+    "root": {"handlers": ["console"], "level": "INFO"},
 }
 
