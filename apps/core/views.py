@@ -1,8 +1,14 @@
 from django.http import HttpResponse
 from django.views.generic import TemplateView, View
+import os
 
 from apps.catalog.models import Category
 from apps.services.models import Service
+
+
+class HealthCheckView(View):
+    def get(self, request):
+        return HttpResponse("OK", content_type="text/plain")
 
 
 class IndexView(TemplateView):
