@@ -106,7 +106,7 @@ SITE_NAME=Синтез М
 
 ### 2.1. Развертывание на Vercel
 
-1. **Установите Vercel CLI**:
+1. **Установите Vercel CLI** (если еще не установлено):
    ```bash
    npm install -g vercel
    ```
@@ -118,9 +118,9 @@ SITE_NAME=Синтез М
 
 3. **Разверните проект**:
    ```bash
-   vercel
+   vercel --prod
    ```
-   Следуйте инструкциям, выберите "Python" как runtime.
+   Следуйте инструкциям - Vercel автоматически обнаружит Python проект.
 
 4. **Настройте переменные окружения** в Vercel Dashboard:
    - `SECRET_KEY`: сгенерируйте новый ключ
@@ -128,6 +128,8 @@ SITE_NAME=Синтез М
    - `ALLOWED_HOSTS`: ваш домен Vercel (например, `your-app.vercel.app`)
    - `DATABASE_URL`: URL вашей базы данных (PostgreSQL или другой)
    - `TELEGRAM_BOT_TOKEN`: токен бота (опционально)
+
+**Примечание:** Vercel автоматически установит зависимости из `requirements.txt` и запустит Django приложение как serverless function.
 
 5. **Переразверните**:
    ```bash
