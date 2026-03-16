@@ -2,10 +2,57 @@
 
 Этот проект представляет собой Django-приложение для сайта компании "Синтез М", предоставляющей услуги по обслуживанию танк-контейнеров и бензовозов.
 
+## Функции
+
+- 🌐 **Веб-сайт**: Информационные страницы, каталог услуг, контактная форма
+- 📝 **Заявки**: Форма подачи заявок на услуги с автоматическими уведомлениями
+- 🤖 **Telegram бот**: Уведомления подписчикам о новых заявках
+- 🐳 **Docker**: Готовая конфигурация для развертывания
+- ☁️ **Vercel**: Поддержка бессерверного развертывания
+
+## Структура проекта
+
+```
+sintez_m/
+├── apps/                          # Приложения Django
+│   ├── applications/              # Заявки на услуги
+│   ├── catalog/                   # Каталог товаров/услуг
+│   ├── core/                      # Основное приложение
+│   └── services/                  # Услуги
+├── config/                        # Конфигурация Django
+│   ├── settings/                  # Настройки по окружениям
+│   └── urls.py                    # Основные URL
+├── media/                         # Медиафайлы
+├── static/                        # Статические файлы
+├── templates/                     # Шаблоны
+├── logs/                          # Логи
+├── nginx/                         # Конфигурация Nginx
+├── run_bot.py                     # Скрипт Telegram бота
+├── vercel.json                    # Конфигурация Vercel
+├── docker-compose.yml             # Docker Compose
+├── Dockerfile                     # Docker образ
+├── manage.py                      # Django CLI
+└── requirements.txt               # Зависимости Python
+```
+
 ## Требования
 
-- Docker и Docker Compose
+- Docker и Docker Compose (для production)
+- Python 3.11+ (для разработки)
+- PostgreSQL (опционально, по умолчанию SQLite)
 - Доменное имя (опционально, для SSL)
+
+## Telegram бот
+
+Проект включает Telegram бота для уведомлений о новых заявках. Бот позволяет:
+- Подписываться на уведомления командой `/start`
+- Отписываться командой `/stop`
+- Получать автоматические уведомления о новых заявках
+
+**Настройка бота:**
+1. Создайте бота через [@BotFather](https://t.me/botfather) в Telegram
+2. Получите токен бота
+3. Добавьте токен в переменные окружения: `TELEGRAM_BOT_TOKEN=ваш_токен`
 
 ## Развертывание
 
@@ -57,7 +104,37 @@ SITE_NAME=Синтез М
 
 **Важно:** Сгенерируйте новый `SECRET_KEY` с помощью `python -c "import secrets; print(secrets.token_urlsafe(50))"`
 
-### 2.1. Локальный запуск (для разработки)
+### 2.1. Развертывание на Vercel
+
+1. **Установите Vercel CLI**:
+   ```bash
+   npm install -g vercel
+   ```
+
+2. **Залогиньтесь**:
+   ```bash
+   vercel login
+   ```
+
+3. **Разверните проект**:
+   ```bash
+   vercel
+   ```
+   Следуйте инструкциям, выберите "Python" как runtime.
+
+4. **Настройте переменные окружения** в Vercel Dashboard:
+   - `SECRET_KEY`: сгенерируйте новый ключ
+   - `DEBUG`: `False`
+   - `ALLOWED_HOSTS`: ваш домен Vercel (например, `your-app.vercel.app`)
+   - `DATABASE_URL`: URL вашей базы данных (PostgreSQL)
+   - `TELEGRAM_BOT_TOKEN`: токен бота (опционально)
+
+5. **Переразверните**:
+   ```bash
+   vercel --prod
+   ```
+
+### 3. Локальный запуск (для разработки)
 
 ```bash
 # Установите зависимости
@@ -70,11 +147,21 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+**Запуск Telegram бота (в отдельном терминале):**
+```bash
+python run_bot.py
+```
+
+**Тестирование бота:**
+- Найдите бота в Telegram по имени
+- Отправьте `/start` для подписки
+- Создайте тестовую заявку через веб-интерфейс
+- Проверьте получение уведомления в Telegram
+```
+
 Сервер будет доступен по адресу: http://localhost:8000
 
-### 3. Запуск с Docker Compose
-
-### 3. Запуск с Docker Compose
+### 4. Запуск с Docker Compose
 
 ```bash
 docker-compose up -d
@@ -86,7 +173,7 @@ docker-compose up -d
 - Nginx веб-сервер
 - **Telegram-бот** (автоматически, если задан `TELEGRAM_BOT_TOKEN`)
 
-### 4. Миграции и статические файлы
+### 5. Миграции и статические файлы
 
 При первом запуске контейнеры автоматически выполнят:
 - Миграции БД (`python manage.py migrate`)
@@ -98,7 +185,7 @@ docker-compose exec app python manage.py migrate
 docker-compose exec app python manage.py collectstatic --noinput
 ```
 
-### 5. Настройка Telegram бота
+### 6. Настройка Telegram бота
 
 1. Создайте бота через [@BotFather](https://t.me/botfather) в Telegram и получите токен.
 2. Добавьте `TELEGRAM_BOT_TOKEN=ваш_токен` в файл `.env`.
@@ -117,13 +204,13 @@ docker-compose exec app python manage.py run_telegram_bot
 python manage.py run_telegram_bot
 ```
 
-### 6. Создание суперпользователя (опционально)
+### 7. Создание суперпользователя (опционально)
 
 ```bash
 docker-compose exec app python manage.py createsuperuser
 ```
 
-### 6. Настройка SSL (рекомендуется)
+### 8. Настройка SSL (рекомендуется)
 
 1. Получите SSL-сертификаты (Let's Encrypt или другие).
 2. Поместите их в `nginx/ssl/`:
@@ -133,13 +220,13 @@ docker-compose exec app python manage.py createsuperuser
 
 Если SSL не нужен, измените `nginx/nginx.conf` для HTTP-only.
 
-### 7. Мониторинг
+### 9. Мониторинг
 
 - Логи приложения: `docker-compose logs app`
 - Логи Nginx: `docker-compose logs nginx`
 - Логи БД: `docker-compose logs db`
 
-### 8. Обновление
+### 10. Обновление
 
 ```bash
 git pull
@@ -171,3 +258,29 @@ docker-compose up --build -d
 ### Поддержка
 
 Если возникли проблемы, проверьте логи и настройки в `.env`.
+
+## Поддержка
+
+Если у вас возникли проблемы с развертыванием или работой приложения:
+
+1. **Проверьте логи**:
+   ```bash
+   docker-compose logs -f app
+   ```
+
+2. **Проверьте статус контейнеров**:
+   ```bash
+   docker-compose ps
+   ```
+
+3. **Перезапустите сервисы**:
+   ```bash
+   docker-compose restart
+   ```
+
+4. **Обновите образы**:
+   ```bash
+   docker-compose pull && docker-compose up -d
+   ```
+
+Для вопросов по коду или развертыванию создайте issue в репозитории.
