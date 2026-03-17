@@ -107,19 +107,19 @@ h1{
 .nav-toggle{
   display:none;
   width:38px;height:38px;
-  margin-left:8px;
+  margin-left:auto;
   border-radius:999px;
   border:1px solid var(--border);
   background:var(--surface);
   padding:0;
 }
-.nav-toggle span{
-  display:block;width:18px;height:2px;
+.nav-toggle img{
+  width:18px;
+  height:18px;
+  display:block;
   margin:0 auto;
-  background:var(--muted);
-  border-radius:2px;
+  opacity:.75;
 }
-.nav-toggle span+span{margin-top:5px}
 
 .header-cta{
   border:1px solid rgba(154,123,79,.45);

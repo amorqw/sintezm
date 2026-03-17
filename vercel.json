@@ -5,6 +5,7 @@
   ],
   "routes": [
     { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/media/(.*)", "dest": "/media/$1" },
     { "src": "/favicon.ico", "dest": "/static/images/favicon.ico" },
     { "src": "/(.*)", "dest": "api/index.py" }
   ]

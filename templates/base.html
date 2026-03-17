@@ -61,7 +61,7 @@
           <a href="{{ contacts_url }}" class="{% if request.path == contacts_url %}is-active{% endif %}">Контакты</a>
         </nav>
         <button class="nav-toggle" type="button" aria-label="Меню" aria-expanded="false">
-          <span></span><span></span>
+          <img src="{% static 'images/menu.png' %}" alt="" />
         </button>
         <a class="header-cta" href="{% url 'core:contacts' %}">Оставить заявку</a>
       </div>
