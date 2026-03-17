@@ -7,6 +7,5 @@
     { "src": "/static/(.*)", "dest": "/static/$1" },
     { "src": "/favicon.ico", "dest": "/static/images/favicon.ico" },
     { "src": "/(.*)", "dest": "api/index.py" }
-  ],
-  "buildCommand": "DJANGO_SETTINGS_MODULE=config.settings.vercel python manage.py collectstatic --noinput"
+  ]
 }
