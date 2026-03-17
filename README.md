@@ -9,8 +9,13 @@
 - 🌐 **Веб-сайт**: Информационные страницы, каталог услуг, контактная форма
 - 📝 **Заявки**: Форма подачи заявок на услуги с автоматическими уведомлениями
 - 🤖 **Telegram бот**: Уведомления подписчикам о новых заявках
+- �️ **Услуги, поддерживаемые на сайте:**
+  - Установка волнорезов
+  - Установка нижнего налива для бензовозов
+  - Лазерная очистка металла
+  - Гидроабразивная очистка давлением до 1000 бар
 - 🐳 **Docker**: Готовая конфигурация для развертывания
-- ☁️ **Vercel**: Поддержка бессерверного развертывания
+- ☁️ **Railway**: Рекомендуемый способ развертывания (работает лучше, чем Vercel для Django)
 
 ## Структура проекта
 
@@ -87,13 +92,17 @@ SECRET_KEY=ваш-секретный-ключ
 DEBUG=True
 ALLOWED_HOSTS=localhost,127.0.0.1
 
-# База данных (SQLite для разработки)
-DATABASE_URL=sqlite:///db.sqlite3
+# PostgreSQL (локальный или Docker)
+POSTGRES_USER=sintezm
+POSTGRES_PASSWORD=sintez_kirill
+POSTGRES_DB=sintezm_db
+DATABASE_URL=postgresql://sintezm:sintez_kirill@db:5432/sintezm_db
 
 # Telegram бот (опционально, для тестирования)
 TELEGRAM_BOT_TOKEN=ваш_токен_бота
 ```
 
+> Если вы запускаете только локально (не через Docker), замените `db` в `DATABASE_URL` на `localhost` и запустите PostgreSQL отдельно.
 **Для production с Docker:**
 ```env
 # Django
@@ -148,6 +157,9 @@ Railway - самый простой способ развертывания Djan
    TELEGRAM_BOT_TOKEN=ваш_токен_бота (опционально)
    ```
 
+   > В Railway БД создается автоматически, поэтому `DATABASE_URL` не нужно указывать.
+
+
 5. **Готово!** Приложение будет доступно по сгенерированному URL
 
 **Примечание:** Railway использует файлы `Procfile`, `runtime.txt` и `requirements.txt` для автоматической настройки.
@@ -157,18 +169,62 @@ Railway - самый простой способ развертывания Djan
    vercel --prod
    ```
 
-### 4. Локальный запуск (для разработки)
+### 4. Настройка PostgreSQL базы данных
 
-```bash
-# Установите зависимости
-pip install -r requirements.txt
+**Для Railway (автоматически):**
+Railway автоматически создаст PostgreSQL базу данных.
 
-# Примените миграции
-python manage.py migrate
+**Для локальной разработки:**
 
-# Запустите сервер
-python manage.py runserver
-```
+1. **Установите PostgreSQL** (если не установлен):
+   - Скачайте с [postgresql.org](https://www.postgresql.org/download/)
+   - Или используйте Docker: `docker run --name postgres -e POSTGRES_PASSWORD=password -d -p 5432:5432 postgres`
+
+2. **Создайте базу данных:**
+   ```bash
+   createdb sintez_db
+   ```
+
+3. **Или используйте pgAdmin/SQL Shell:**
+   ```sql
+   CREATE DATABASE sintez_db;
+   CREATE USER sintez_user WITH PASSWORD 'password';
+   GRANT ALL PRIVILEGES ON DATABASE sintez_db TO sintez_user;
+   ```
+
+4. **Обновите `.env` файл:**
+   ```env
+   DATABASE_URL=postgresql://username:password@localhost:5432/sintez_db
+   ```
+
+5. **Выполните настройку:**
+   ```bash
+   python setup_db.py
+   ```
+
+### 5. Локальный запуск (для разработки)
+
+Проект больше не использует SQLite — требуется PostgreSQL.
+
+#### Вариант A — через Docker (рекомендовано)
+1. Запустите контейнеры:
+   ```bash
+   docker-compose up -d
+   ```
+2. Запустите приложение (локально или внутри контейнера):
+   ```bash
+   python manage.py runserver
+   ```
+
+#### Вариант B — локально (PostgreSQL должен быть установлен и запущен)
+1. Установите PostgreSQL и создайте базу данных, пользователя и пароль.
+2. В `.env` укажите `DATABASE_URL` на `localhost`.
+3. Выполните миграции и запустите сервер:
+   ```bash
+   pip install -r requirements.txt
+   python manage.py migrate
+   python manage.py runserver
+   ```
 
 **Запуск Telegram бота (в отдельном терминале):**
 ```bash
@@ -180,7 +236,6 @@ python run_bot.py
 - Отправьте `/start` для подписки
 - Создайте тестовую заявку через веб-интерфейс
 - Проверьте получение уведомления в Telegram
-```
 
 Сервер будет доступен по адресу: http://localhost:8000
 

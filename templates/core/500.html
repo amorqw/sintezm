@@ -1,13 +1,16 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}Ошибка сервера | Синтез М{% endblock %}
-{% block meta_description %}<meta name="description" content="Произошла ошибка сервера. Попробуйте позже." />{% endblock %}
+{% block meta_description %}<meta name="description" content="Произошла ошибка сервера." />{% endblock %}
 
 {% block content %}
   <section class="section">
     <div class="container prose">
-      <h1>500</h1>
-      <p>Произошла ошибка. Попробуйте обновить страницу или вернуться позже.</p>
+      <div class="page-head">
+        <div class="section-kicker">Ошибка</div>
+        <h1>500</h1>
+        <p class="lead">Произошла ошибка сервера. Попробуйте обновить страницу или вернитесь позже.</p>
+      </div>
     </div>
   </section>
 {% endblock %}

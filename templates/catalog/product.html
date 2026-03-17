@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}{{ product.meta_title|default:product.name }} | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="{{ product.meta_description|default:product.description|truncatechars:200 }}" />{% endblock %}
@@ -38,7 +38,7 @@
         </nav>
         <h1>{{ product.name }}</h1>
         {% if product.image %}
-          <p><img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" style="max-width:100%;max-height:400px;border-radius:12px;object-fit:cover;"></p>
+          <p><img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" style="max-width:100%;max-height:420px;border-radius:16px;object-fit:cover;"></p>
         {% endif %}
         {% if product.article_number %}
           <div class="muted">Артикул: {{ product.article_number }}</div>

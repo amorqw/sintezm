@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 {% load static %}
 
 {% block title %}Синтез М — услуги и запчасти | Синтез М{% endblock %}
@@ -21,23 +21,46 @@
 {% block content %}
   <section class="hero">
     <div class="container hero-inner">
-      <div>
-        <h1>Профессиональный сервис для танк-контейнеров и бензовозов</h1>
-        <p class="lead">
-          Мы обеспечиваем полный цикл обслуживания: от глубокой мойки и пропарки до сложного ремонта и монтажа. Поставляем качественные запчасти и расходники напрямую из Китая. Работаем без выходных, в любую погоду — ваш надежный партнер в логистике жидкостей.
+      <div class="hero-copy">
+        <div class="hero-eyebrow">Синтез М</div>
+        <h1 class="hero-title">Профессиональный сервис для танк-контейнеров и бензовозов</h1>
+        <p class="hero-lead">
+          Полный цикл обслуживания: от глубокой мойки и пропарки до сложного ремонта и монтажа. Поставляем качественные
+          запчасти и расходники. Работаем без выходных, в любую погоду — надёжный партнёр в логистике жидкостей.
         </p>
-        <p>
+        <div class="hero-actions">
           <a class="btn btn-accent" href="{% url 'core:contacts' %}">Оставить заявку</a>
-        </p>
+          <a class="btn btn-ghost" href="{% url 'catalog:index' %}">Перейти в каталог</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-value">Сервис</div>
+            <div class="stat-label">от мойки до ремонта</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">Комплектующие</div>
+            <div class="stat-label">под заказ и со склада</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value">Подход</div>
+            <div class="stat-label">под требования клиента</div>
+          </div>
+        </div>
       </div>
-      <div class="hero-card">
+      <div class="hero-panel">
         <h2 class="h2">Для кого мы работаем</h2>
         <div class="content-block">
-          <ul>
+          <ul class="list-check">
             <li>Операторы и владельцы танк-контейнеров</li>
             <li>Автопарки с бензовозами</li>
             <li>Логистические и производственные компании с IBC-контейнерами</li>
           </ul>
+        </div>
+        <div class="hero-photo">
+          <div class="hero-photo-frame">
+            <img class="hero-photo-image" src="{% static 'images/tanker-hero.jpg' %}" alt="Прицеп бензовоза" loading="lazy" />
+          </div>
+          <div class="hero-photo-caption">Техника для перевозки жидкостей — в готовности к сервису.</div>
         </div>
       </div>
     </div>
@@ -46,7 +69,11 @@
   <section class="section">
     <div class="container">
       <div class="section-head">
-        <h2 class="h2">Услуги</h2>
+        <div>
+          <div class="section-kicker">Сервис</div>
+          <h2 class="section-title">Услуги</h2>
+          <p class="section-lead">Комплексные работы для танк-контейнеров, бензовозов и IBC.</p>
+        </div>
         <a class="link" href="{% url 'services:list' %}">Все услуги →</a>
       </div>
       <div class="grid">
@@ -54,7 +81,7 @@
           <a class="card" href="{{ service.get_absolute_url }}">
             {% if service.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+                <img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;max-height:160px;">
               </div>
             {% endif %}
             <div class="card-title">{{ service.name }}</div>
@@ -70,7 +97,11 @@
   <section class="section section-alt">
     <div class="container">
       <div class="section-head">
-        <h2 class="h2">Каталог</h2>
+        <div>
+          <div class="section-kicker">Каталог</div>
+          <h2 class="section-title">Комплектующие</h2>
+          <p class="section-lead">Запчасти, расходники и оборудование для техники.</p>
+        </div>
         <a class="link" href="{% url 'catalog:index' %}">Перейти в каталог →</a>
       </div>
       <div class="grid">
@@ -78,7 +109,7 @@
           <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
             {% if category.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;max-height:160px;">
               </div>
             {% endif %}
             <div class="card-title">{{ category.name }}</div>

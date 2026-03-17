@@ -1,4 +1,4 @@
-<form class="app-form js-app-form" method="post" action="{% url 'applications:apply' %}">
+﻿<form class="app-form js-app-form" method="post" action="{% url 'applications:apply' %}">
   {% csrf_token %}
   <input type="hidden" name="next" value="{{ request.get_full_path }}" />
   <input type="hidden" name="source" value="{{ source|default:'general' }}" />
@@ -39,7 +39,7 @@
 
   <div class="form-actions">
     <button class="btn btn-accent" type="submit">Отправить заявку</button>
-    <div class="form-hint muted">Перезвоним в рабочее время. Онлайн-оплаты нет.</div>
+    <div class="muted">Перезвоним в рабочее время. Онлайн-оплаты нет.</div>
   </div>
 
   <div class="form-result" aria-live="polite"></div>

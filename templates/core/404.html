@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}Страница не найдена | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="Запрошенная страница не найдена." />{% endblock %}
@@ -6,8 +6,11 @@
 {% block content %}
   <section class="section">
     <div class="container prose">
-      <h1>404</h1>
-      <p>Страница не найдена. Перейдите на <a class="link" href="{% url 'core:index' %}">главную</a>.</p>
+      <div class="page-head">
+        <div class="section-kicker">Ошибка</div>
+        <h1>404</h1>
+        <p class="lead">Страница не найдена. Перейдите на <a class="link" href="{% url 'core:index' %}">главную</a>.</p>
+      </div>
     </div>
   </section>
 {% endblock %}

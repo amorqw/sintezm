@@ -1,4 +1,4 @@
-{% load static nav_extras %}
+﻿{% load static nav_extras %}
 <!doctype html>
 <html lang="ru">
   <head>
@@ -17,17 +17,39 @@
     {% endblock %}
     {% block schema %}{% endblock %}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#f6f1e8" />
+
+    <link rel="icon" href="{% static 'images/favicon.ico' %}?v=4" type="image/x-icon" />
+    <link rel="icon" href="{% static 'images/favicon-32.png' %}?v=4" type="image/png" sizes="32x32" />
+    <link rel="icon" href="{% static 'images/favicon-16.png' %}?v=4" type="image/png" sizes="16x16" />
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}?v=4" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}?v=3" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     <script defer src="{% static 'js/apply.js' %}"></script>
   </head>
   <body>
     <header class="site-header">
+      <div class="topbar">
+        <div class="container topbar-inner">
+          <div>Сервис и комплектующие для танк-контейнеров и бензовозов</div>
+          <div class="topbar-links">
+            <a href="tel:+73422502934">+7 (342) 250-29-34</a>
+            <a href="mailto:info@sintez-m.ru">info@sintez-m.ru</a>
+          </div>
+        </div>
+      </div>
       <div class="container header-inner">
-        <a class="logo" href="{% url 'core:index' %}">Синтез М <img src="{% static 'images/logo.png' %}" alt="Синтез М" style="height: 40px; margin-left: 8px; vertical-align: middle;"></a>
+        <a class="logo" href="{% url 'core:index' %}" aria-label="Синтез М">
+          <div class="logo-mark">
+            <img src="{% static 'images/logo.svg' %}" alt="Синтез М" />
+          </div>
+          <span>Синтез М</span>
+        </a>
         <nav class="nav" aria-label="Основная навигация">
           {% url 'services:list' as services_url %}
           {% url 'catalog:index' as catalog_url %}
@@ -50,7 +72,30 @@
     </main>
 
     <footer class="site-footer">
-      <div class="container footer-inner">
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-brand">Синтез М</div>
+          <div class="muted">Сервис, ремонт и комплектующие для танк-контейнеров, бензовозов и IBC.</div>
+        </div>
+        <div>
+          <div class="footer-title">Навигация</div>
+          <div class="footer-nav">
+            <a href="{{ services_url }}">Услуги</a>
+            <a href="{{ catalog_url }}">Каталог</a>
+            <a href="{{ about_url }}">О компании</a>
+            <a href="{{ contacts_url }}">Контакты</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-title">Контакты</div>
+          <div class="footer-nav">
+            <a href="tel:+73422502934">+7 (342) 250-29-34</a>
+            <a href="mailto:info@sintez-m.ru">info@sintez-m.ru</a>
+            <span class="muted">Пермь, ул. Причальная 9</span>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
         <div class="muted">© {{ SITE_NAME }}, {% now "Y" %}</div>
         <div class="muted">Сервис и комплектующие для танк-контейнеров и бензовозов</div>
       </div>

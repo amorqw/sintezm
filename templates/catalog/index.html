@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}Каталог запчастей | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="Каталог запчастей и комплектующих для танк-контейнеров и бензовозов: прокладки, донные клапаны и другие расходники." />{% endblock %}
@@ -7,13 +7,17 @@
 {% block content %}
   <section class="section">
     <div class="container">
-      <h1>Каталог</h1>
+      <div class="page-head">
+        <div class="section-kicker">Каталог</div>
+        <h1>Комплектующие и запчасти</h1>
+        <p class="lead">Подбор по категориям для обслуживания и ремонта техники.</p>
+      </div>
       <div class="grid">
         {% for category in categories %}
           <a class="card" href="{% url 'catalog:category' category_slug=category.slug %}">
             {% if category.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+                <img src="{{ category.image.url }}" alt="{{ category.name }}" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;max-height:160px;">
               </div>
             {% endif %}
             <div class="card-title">{{ category.name }}</div>

@@ -5,11 +5,14 @@ import os
 DEBUG = False
 
 # Production settings for Railway and other platforms
-ALLOWED_HOSTS = ['*']  # Will be overridden by environment variables
+# Prefer env ALLOWED_HOSTS from base; fallback to main domain
+if not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ["sintezm.ru", "www.sintezm.ru"]
 SECURE_SSL_REDIRECT = True
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ["https://sintezm.ru", "https://www.sintezm.ru"]
 
 # Logging for production (console output)
 LOGGING = {

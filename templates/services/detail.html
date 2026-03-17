@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}{{ service.meta_title|default:service.name }} | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="{{ service.meta_description|default:service.short_description|truncatechars:200 }}" />{% endblock %}
@@ -28,7 +28,7 @@
         </nav>
         <h1>{{ service.name }}</h1>
         {% if service.image %}
-          <p><img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="max-width:100%;max-height:400px;border-radius:12px;object-fit:cover;"></p>
+          <p><img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="max-width:100%;max-height:420px;border-radius:16px;object-fit:cover;"></p>
         {% endif %}
         {% if service.price_display %}
           <div class="price">от {{ service.price_display }}</div>

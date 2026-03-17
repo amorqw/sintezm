@@ -7,7 +7,7 @@ function getCookie(name) {
 
 async function submitForm(form) {
   const resultEl = form.querySelector(".form-result");
-  if (resultEl) resultEl.textContent = "Отправляем…";
+  if (resultEl) resultEl.textContent = "??????????…";
 
   const formData = new FormData(form);
   normalizePhoneField(form, formData);
@@ -28,13 +28,13 @@ async function submitForm(form) {
 
   const payload = await resp.json().catch(() => null);
   if (!resp.ok || !payload || payload.success !== true) {
-    const err = (payload && payload.error) ? payload.error : "Не удалось отправить. Попробуйте ещё раз.";
+    const err = (payload && payload.error) ? payload.error : "?? ??????? ?????????. ?????????? ??? ???.";
     if (resultEl) resultEl.textContent = err;
     return;
   }
 
   form.reset();
-  if (resultEl) resultEl.textContent = "Заявка отправлена. Мы свяжемся с вами.";
+  if (resultEl) resultEl.textContent = "?????? ??????????. ?? ???????? ? ????.";
 }
 
 document.addEventListener("submit", (e) => {
@@ -44,7 +44,7 @@ document.addEventListener("submit", (e) => {
   e.preventDefault();
   submitForm(form).catch(() => {
     const resultEl = form.querySelector(".form-result");
-    if (resultEl) resultEl.textContent = "Ошибка сети. Попробуйте ещё раз.";
+    if (resultEl) resultEl.textContent = "?????? ????. ?????????? ??? ???.";
   });
 });
 
@@ -122,20 +122,20 @@ function validateRequiredFields(form, resultEl) {
   });
 
   if (nameField && !nameField.value.trim()) {
-    markFieldError(nameField, "Укажите имя");
+    markFieldError(nameField, "??????? ???");
     ok = false;
   }
   if (phoneField && phoneField.value.replace(/\D/g, "").length < 11) {
-    markFieldError(phoneField, "Укажите корректный телефон");
+    markFieldError(phoneField, "??????? ?????????? ???????");
     ok = false;
   }
   if (emailField && !emailField.value.trim()) {
-    markFieldError(emailField, "Укажите email");
+    markFieldError(emailField, "??????? email");
     ok = false;
   }
 
   if (!ok && resultEl) {
-    resultEl.textContent = "Проверьте выделенные поля.";
+    resultEl.textContent = "????????? ?????????? ????.";
   }
   return ok;
 }
@@ -149,4 +149,32 @@ function markFieldError(input, message) {
   div.textContent = message;
   wrapper.appendChild(div);
 }
+
+function initNavToggle() {
+  const toggle = document.querySelector(".nav-toggle");
+  const header = document.querySelector(".site-header");
+  if (!toggle || !header) return;
+
+  const closeNav = () => {
+    document.body.classList.remove("nav-open");
+    toggle.setAttribute("aria-expanded", "false");
+  };
+
+  toggle.addEventListener("click", () => {
+    const isOpen = document.body.classList.toggle("nav-open");
+    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
+  header.querySelectorAll(".nav a").forEach((link) => {
+    link.addEventListener("click", closeNav);
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!document.body.classList.contains("nav-open")) return;
+    if (header.contains(event.target)) return;
+    closeNav();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", initNavToggle);
 

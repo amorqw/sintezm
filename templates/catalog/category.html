@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}{{ category.name }} | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="{{ category.description|default:'Товары и комплектующие категории'|truncatechars:200 }}" />{% endblock %}
@@ -14,17 +14,19 @@
         <span>/</span>
         <span aria-current="page">{{ category.name }}</span>
       </nav>
-      <h1>{{ category.name }}</h1>
-      
-      {% if category.description %}
-        <p class="lead">{{ category.description }}</p>
-      {% endif %}
+      <div class="page-head">
+        <div class="section-kicker">Категория</div>
+        <h1>{{ category.name }}</h1>
+        {% if category.description %}
+          <p class="lead">{{ category.description }}</p>
+        {% endif %}
+      </div>
       <div class="grid">
         {% for product in products %}
           <a class="card" href="{{ product.get_absolute_url }}">
             {% if product.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;max-height:160px;">
               </div>
             {% endif %}
             <div class="card-title">{{ product.name }}</div>

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+﻿{% extends "base.html" %}
 
 {% block title %}Услуги | Синтез М{% endblock %}
 {% block meta_description %}<meta name="description" content="Услуги компании «Синтез М»: мойка и пропарка танк-контейнеров, бензовозов и IBC, ремонтные работы, монтаж." />{% endblock %}
@@ -7,13 +7,17 @@
 {% block content %}
   <section class="section">
     <div class="container">
-      <h1>Услуги</h1>
+      <div class="page-head">
+        <div class="section-kicker">Сервис</div>
+        <h1>Услуги</h1>
+        <p class="lead">Полный спектр работ для безопасной эксплуатации и продления ресурса техники.</p>
+      </div>
       <div class="grid">
         {% for service in services %}
           <a class="card" href="{{ service.get_absolute_url }}">
             {% if service.image %}
               <div style="margin-bottom:8px">
-                <img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="width:100%;border-radius:10px;object-fit:cover;max-height:140px;max-width:100%;">
+                <img src="{{ service.image.url }}" alt="{{ service.name }}" loading="lazy" style="width:100%;border-radius:12px;object-fit:cover;max-height:160px;">
               </div>
             {% endif %}
             <div class="card-title">{{ service.name }}</div>
