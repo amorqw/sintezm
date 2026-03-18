@@ -32,8 +32,7 @@ services:
     env_file:
       - .env
     depends_on:
-      app:
-        condition: service_completed_successfully
+      - app
     networks:
       - internal
     command: python manage.py run_telegram_bot

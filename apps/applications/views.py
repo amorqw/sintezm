@@ -1,11 +1,11 @@
-import logging
+﻿import logging
+from datetime import timedelta
 
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views import View
-from datetime import timedelta
 
 from apps.catalog.models import Product
 from apps.services.models import Service
@@ -21,26 +21,29 @@ def _get_source_display(source: str) -> str:
 
 
 def _telegram_text(app: Application) -> str:
-    # Добавляем 2 часа к времени создания
+    # Добавляем 2 часа к времени создания (если нужно смещение)
     created_time = timezone.localtime(app.created_at) + timedelta(hours=2)
     created = created_time.strftime("%d.%m.%Y %H:%M")
-    return "\n".join(
-        [
-            "🔔 Новая заявка с сайта!",
-            "",
-            f"👤 Имя: {app.name}",
-            f"📞 Телефон: {app.phone}",
-            f"📧 Email: {app.email or 'не указан'}",
-            f"📋 Источник: {_get_source_display(app.source)}",
-            f"💬 Сообщение: {app.message or 'не указано'}",
-            "",
-            f"🕐 {created}",
-        ]
-    )
+
+    lines = [
+        "🔔 Новая заявка с сайта!",
+        "",
+        f"👤 Имя: {app.name}",
+        f"📞 Телефон: {app.phone}",
+        f"📧 Email: {app.email or 'не указан'}",
+        f"📍 Источник: {_get_source_display(app.source)}",
+    ]
+
+    if app.service_id:
+        lines.append(f"🛠 Услуга: {app.service.name} (id={app.service_id})")
     if app.product_id:
-        lines.append(f"Товар: {app.product.name} (id={app.product_id})")
-    lines.extend(["", f"Сообщение: {app.message or 'не указано'}"])
-    return subject, "\n".join(lines)
+        lines.append(f"📦 Товар: {app.product.name} (id={app.product_id})")
+
+    lines.append(f"💬 Сообщение: {app.message or 'не указано'}")
+    lines.append("")
+    lines.append(f"🕒 {created}")
+
+    return "\n".join(lines)
 
 
 class ApplyView(View):
@@ -56,7 +59,7 @@ class ApplyView(View):
         product_id = (data.get("product_id") or "").strip()
 
         if not name or not phone or not email:
-            return self._fail(request, "name, phone и email обязательны")
+            return self._fail(request, "Имя, телефон и email обязательны")
 
         service = None
         product = None
@@ -126,4 +129,3 @@ def _normalize_phone(raw: str) -> str:
         return raw
 
     return "+7" + digits[1:]
-

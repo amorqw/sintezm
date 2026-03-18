@@ -1,4 +1,4 @@
-import os
+﻿import os
 import sys
 import logging
 
@@ -9,14 +9,36 @@ import django
 from django.core.management.base import BaseCommand
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
+from asgiref.sync import sync_to_async
 
-# Setup Django
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings.local")
+# Setup Django (respect env, fallback to production)
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    os.getenv("DJANGO_SETTINGS_MODULE", "config.settings.production"),
+)
 django.setup()
 
-from applications.models import TelegramSubscriber
+from apps.applications.models import TelegramSubscriber
 
 logger = logging.getLogger(__name__)
+
+
+@sync_to_async
+def get_or_create_subscriber(chat_id, username, first_name):
+    return TelegramSubscriber.objects.get_or_create(
+        chat_id=chat_id,
+        defaults={"username": username, "first_name": first_name},
+    )
+
+
+@sync_to_async
+def delete_subscriber(chat_id):
+    try:
+        subscriber = TelegramSubscriber.objects.get(chat_id=chat_id)
+        subscriber.delete()
+        return True
+    except TelegramSubscriber.DoesNotExist:
+        return False
 
 
 class Command(BaseCommand):
@@ -42,13 +64,7 @@ class Command(BaseCommand):
 
             self.stdout.write(f"Попытка подписки: chat_id={chat_id}, username={username}")
 
-            subscriber, created = TelegramSubscriber.objects.get_or_create(
-                chat_id=chat_id,
-                defaults={
-                    "username": username,
-                    "first_name": first_name,
-                }
-            )
+            subscriber, created = await get_or_create_subscriber(chat_id, username, first_name)
 
             if created:
                 self.stdout.write(f"Создан новый подписчик: {subscriber}")
@@ -67,14 +83,13 @@ class Command(BaseCommand):
         async def stop(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
             chat_id = str(update.effective_chat.id)
 
-            try:
-                subscriber = TelegramSubscriber.objects.get(chat_id=chat_id)
-                subscriber.delete()
+            deleted = await delete_subscriber(chat_id)
+            if deleted:
                 await update.message.reply_text(
                     "Вы отписались от уведомлений о заявках.\n"
                     "Используйте /start для повторной подписки."
                 )
-            except TelegramSubscriber.DoesNotExist:
+            else:
                 await update.message.reply_text(
                     "Вы не были подписаны на уведомления.\n"
                     "Используйте /start для подписки."

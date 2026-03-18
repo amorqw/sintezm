@@ -103,6 +103,7 @@ h1{
 .nav a{color:var(--muted);padding:8px 10px;border-radius:999px;transition:all .2s ease}
 .nav a:hover{background:rgba(154,123,79,.12);color:var(--ink)}
 .nav a.is-active{color:var(--forest);background:rgba(47,74,58,.14)}
+.nav-cta{display:none}
 
 .nav-toggle{
   display:none;
@@ -327,6 +328,18 @@ input:focus,textarea:focus{border-color:rgba(154,123,79,.6);box-shadow:0 0 0 3px
     flex-direction:column;
     gap:6px;
     box-shadow:var(--shadow);
+  }
+  .nav-cta{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-top:6px;
+    border-radius:999px;
+    padding:10px 14px;
+    border:1px solid rgba(154,123,79,.45);
+    background:rgba(154,123,79,.12);
+    color:var(--forest);
+    font-weight:600;
   }
   body.nav-open .nav{display:flex}
   .nav-toggle{display:inline-flex;align-items:center;justify-content:center}

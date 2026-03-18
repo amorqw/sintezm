@@ -59,6 +59,7 @@
           <a href="{{ catalog_url }}" class="{% if request.path|startswith:catalog_url %}is-active{% endif %}">Каталог</a>
           <a href="{{ about_url }}" class="{% if request.path == about_url %}is-active{% endif %}">О компании</a>
           <a href="{{ contacts_url }}" class="{% if request.path == contacts_url %}is-active{% endif %}">Контакты</a>
+          <a class="nav-cta" href="{% url 'core:contacts' %}">Оставить заявку</a>
         </nav>
         <button class="nav-toggle" type="button" aria-label="Меню" aria-expanded="false">
           <img src="{% static 'images/menu.png' %}" alt="" />
