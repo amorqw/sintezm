@@ -1,4 +1,4 @@
-function getCookie(name) {
+﻿function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
   if (parts.length === 2) return parts.pop().split(";").shift();
@@ -7,7 +7,7 @@ function getCookie(name) {
 
 async function submitForm(form) {
   const resultEl = form.querySelector(".form-result");
-  if (resultEl) resultEl.textContent = "??????????…";
+  if (resultEl) resultEl.textContent = "Отправляем…";
 
   const formData = new FormData(form);
   normalizePhoneField(form, formData);
@@ -28,13 +28,13 @@ async function submitForm(form) {
 
   const payload = await resp.json().catch(() => null);
   if (!resp.ok || !payload || payload.success !== true) {
-    const err = (payload && payload.error) ? payload.error : "?? ??????? ?????????. ?????????? ??? ???.";
+    const err = (payload && payload.error) ? payload.error : "Не удалось отправить. Попробуйте ещё раз.";
     if (resultEl) resultEl.textContent = err;
     return;
   }
 
   form.reset();
-  if (resultEl) resultEl.textContent = "?????? ??????????. ?? ???????? ? ????.";
+  if (resultEl) resultEl.textContent = "Заявка отправлена. Мы свяжемся с вами.";
 }
 
 document.addEventListener("submit", (e) => {
@@ -44,7 +44,7 @@ document.addEventListener("submit", (e) => {
   e.preventDefault();
   submitForm(form).catch(() => {
     const resultEl = form.querySelector(".form-result");
-    if (resultEl) resultEl.textContent = "?????? ????. ?????????? ??? ???.";
+    if (resultEl) resultEl.textContent = "Ошибка сети. Попробуйте ещё раз.";
   });
 });
 
@@ -122,20 +122,20 @@ function validateRequiredFields(form, resultEl) {
   });
 
   if (nameField && !nameField.value.trim()) {
-    markFieldError(nameField, "??????? ???");
+    markFieldError(nameField, "Укажите имя");
     ok = false;
   }
   if (phoneField && phoneField.value.replace(/\D/g, "").length < 11) {
-    markFieldError(phoneField, "??????? ?????????? ???????");
+    markFieldError(phoneField, "Укажите корректный телефон");
     ok = false;
   }
   if (emailField && !emailField.value.trim()) {
-    markFieldError(emailField, "??????? email");
+    markFieldError(emailField, "Укажите email");
     ok = false;
   }
 
   if (!ok && resultEl) {
-    resultEl.textContent = "????????? ?????????? ????.";
+    resultEl.textContent = "Проверьте выделенные поля.";
   }
   return ok;
 }
@@ -177,4 +177,3 @@ function initNavToggle() {
 }
 
 document.addEventListener("DOMContentLoaded", initNavToggle);
-
